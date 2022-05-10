@@ -30,13 +30,13 @@ use Google\Cloud\Compute\V1\InstanceTemplatesClient;
 use Google\Cloud\Compute\V1\NetworkInterface;
 use Google\Cloud\Compute\V1\ZoneOperationsClient;
 use Google\Cloud\Compute\V1\ShieldedInstanceConfig;
-use Google\Cloud\Core\Testing\System\SystemTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group compute
  * @group gapic
  */
-class SmokeTest extends SystemTestCase
+class SmokeTest extends TestCase
 {
     const ZONE = 'us-central1-a';
     const IMAGE = 'projects/debian-cloud/global/images/family/debian-10';
