@@ -36,6 +36,7 @@ use Google\Cloud\Asset\V1\AnalyzeMoveResponse;
 use Google\Cloud\Asset\V1\Asset;
 use Google\Cloud\Asset\V1\AssetServiceClient;
 use Google\Cloud\Asset\V1\BatchGetAssetsHistoryResponse;
+use Google\Cloud\Asset\V1\BatchGetEffectiveIamPoliciesResponse;
 use Google\Cloud\Asset\V1\ContentType;
 use Google\Cloud\Asset\V1\ExportAssetsResponse;
 use Google\Cloud\Asset\V1\Feed;
@@ -45,8 +46,10 @@ use Google\Cloud\Asset\V1\IamPolicyAnalysisQuery;
 use Google\Cloud\Asset\V1\IamPolicySearchResult;
 use Google\Cloud\Asset\V1\ListAssetsResponse;
 use Google\Cloud\Asset\V1\ListFeedsResponse;
+use Google\Cloud\Asset\V1\ListSavedQueriesResponse;
 use Google\Cloud\Asset\V1\OutputConfig;
 use Google\Cloud\Asset\V1\ResourceSearchResult;
+use Google\Cloud\Asset\V1\SavedQuery;
 use Google\Cloud\Asset\V1\SearchAllIamPoliciesResponse;
 use Google\Cloud\Asset\V1\SearchAllResourcesResponse;
 use Google\Cloud\Asset\V1\TimeWindow;
@@ -428,6 +431,72 @@ class AssetServiceClientTest extends GeneratedTest
     /**
      * @test
      */
+    public function batchGetEffectiveIamPoliciesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new BatchGetEffectiveIamPoliciesResponse();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $scope = 'scope109264468';
+        $names = [];
+        $response = $client->batchGetEffectiveIamPolicies($scope, $names);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies', $actualFuncCall);
+        $actualValue = $actualRequestObject->getScope();
+        $this->assertProtobufEquals($scope, $actualValue);
+        $actualValue = $actualRequestObject->getNames();
+        $this->assertProtobufEquals($names, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function batchGetEffectiveIamPoliciesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $scope = 'scope109264468';
+        $names = [];
+        try {
+            $client->batchGetEffectiveIamPolicies($scope, $names);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function createFeedTest()
     {
         $transport = $this->createTransport();
@@ -508,6 +577,84 @@ class AssetServiceClientTest extends GeneratedTest
     /**
      * @test
      */
+    public function createSavedQueryTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $description = 'description-1724546052';
+        $creator = 'creator1028554796';
+        $lastUpdater = 'lastUpdater338699296';
+        $expectedResponse = new SavedQuery();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDescription($description);
+        $expectedResponse->setCreator($creator);
+        $expectedResponse->setLastUpdater($lastUpdater);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $client->projectName('[PROJECT]');
+        $savedQuery = new SavedQuery();
+        $savedQueryId = 'savedQueryId1290759850';
+        $response = $client->createSavedQuery($formattedParent, $savedQuery, $savedQueryId);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/CreateSavedQuery', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $actualValue = $actualRequestObject->getSavedQuery();
+        $this->assertProtobufEquals($savedQuery, $actualValue);
+        $actualValue = $actualRequestObject->getSavedQueryId();
+        $this->assertProtobufEquals($savedQueryId, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function createSavedQueryExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedParent = $client->projectName('[PROJECT]');
+        $savedQuery = new SavedQuery();
+        $savedQueryId = 'savedQueryId1290759850';
+        try {
+            $client->createSavedQuery($formattedParent, $savedQuery, $savedQueryId);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function deleteFeedTest()
     {
         $transport = $this->createTransport();
@@ -555,6 +702,67 @@ class AssetServiceClientTest extends GeneratedTest
         $formattedName = $client->feedName('[PROJECT]', '[FEED]');
         try {
             $client->deleteFeed($formattedName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteSavedQueryTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $expectedResponse = new GPBEmpty();
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->savedQueryName('[PROJECT]', '[SAVED_QUERY]');
+        $client->deleteSavedQuery($formattedName);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/DeleteSavedQuery', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function deleteSavedQueryExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->savedQueryName('[PROJECT]', '[SAVED_QUERY]');
+        try {
+            $client->deleteSavedQuery($formattedName);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -758,6 +966,76 @@ class AssetServiceClientTest extends GeneratedTest
     /**
      * @test
      */
+    public function getSavedQueryTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name2 = 'name2-1052831874';
+        $description = 'description-1724546052';
+        $creator = 'creator1028554796';
+        $lastUpdater = 'lastUpdater338699296';
+        $expectedResponse = new SavedQuery();
+        $expectedResponse->setName($name2);
+        $expectedResponse->setDescription($description);
+        $expectedResponse->setCreator($creator);
+        $expectedResponse->setLastUpdater($lastUpdater);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedName = $client->savedQueryName('[PROJECT]', '[SAVED_QUERY]');
+        $response = $client->getSavedQuery($formattedName);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/GetSavedQuery', $actualFuncCall);
+        $actualValue = $actualRequestObject->getName();
+        $this->assertProtobufEquals($formattedName, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function getSavedQueryExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedName = $client->savedQueryName('[PROJECT]', '[SAVED_QUERY]');
+        try {
+            $client->getSavedQuery($formattedName);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
     public function listAssetsTest()
     {
         $transport = $this->createTransport();
@@ -878,6 +1156,78 @@ class AssetServiceClientTest extends GeneratedTest
         $parent = 'parent-995424086';
         try {
             $client->listFeeds($parent);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listSavedQueriesTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $nextPageToken = '';
+        $savedQueriesElement = new SavedQuery();
+        $savedQueries = [
+            $savedQueriesElement,
+        ];
+        $expectedResponse = new ListSavedQueriesResponse();
+        $expectedResponse->setNextPageToken($nextPageToken);
+        $expectedResponse->setSavedQueries($savedQueries);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $formattedParent = $client->projectName('[PROJECT]');
+        $response = $client->listSavedQueries($formattedParent);
+        $this->assertEquals($expectedResponse, $response->getPage()->getResponseObject());
+        $resources = iterator_to_array($response->iterateAllElements());
+        $this->assertSame(1, count($resources));
+        $this->assertEquals($expectedResponse->getSavedQueries()[0], $resources[0]);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/ListSavedQueries', $actualFuncCall);
+        $actualValue = $actualRequestObject->getParent();
+        $this->assertProtobufEquals($formattedParent, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function listSavedQueriesExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $formattedParent = $client->projectName('[PROJECT]');
+        try {
+            $client->listSavedQueries($formattedParent);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
@@ -1098,6 +1448,80 @@ class AssetServiceClientTest extends GeneratedTest
         $updateMask = new FieldMask();
         try {
             $client->updateFeed($feed, $updateMask);
+            // If the $client method call did not throw, fail the test
+            $this->fail('Expected an ApiException, but no exception was thrown.');
+        } catch (ApiException $ex) {
+            $this->assertEquals($status->code, $ex->getCode());
+            $this->assertEquals($expectedExceptionMessage, $ex->getMessage());
+        }
+        // Call popReceivedCalls to ensure the stub is exhausted
+        $transport->popReceivedCalls();
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateSavedQueryTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        // Mock response
+        $name = 'name3373707';
+        $description = 'description-1724546052';
+        $creator = 'creator1028554796';
+        $lastUpdater = 'lastUpdater338699296';
+        $expectedResponse = new SavedQuery();
+        $expectedResponse->setName($name);
+        $expectedResponse->setDescription($description);
+        $expectedResponse->setCreator($creator);
+        $expectedResponse->setLastUpdater($lastUpdater);
+        $transport->addResponse($expectedResponse);
+        // Mock request
+        $savedQuery = new SavedQuery();
+        $updateMask = new FieldMask();
+        $response = $client->updateSavedQuery($savedQuery, $updateMask);
+        $this->assertEquals($expectedResponse, $response);
+        $actualRequests = $transport->popReceivedCalls();
+        $this->assertSame(1, count($actualRequests));
+        $actualFuncCall = $actualRequests[0]->getFuncCall();
+        $actualRequestObject = $actualRequests[0]->getRequestObject();
+        $this->assertSame('/google.cloud.asset.v1.AssetService/UpdateSavedQuery', $actualFuncCall);
+        $actualValue = $actualRequestObject->getSavedQuery();
+        $this->assertProtobufEquals($savedQuery, $actualValue);
+        $actualValue = $actualRequestObject->getUpdateMask();
+        $this->assertProtobufEquals($updateMask, $actualValue);
+        $this->assertTrue($transport->isExhausted());
+    }
+
+    /**
+     * @test
+     */
+    public function updateSavedQueryExceptionTest()
+    {
+        $transport = $this->createTransport();
+        $client = $this->createClient([
+            'transport' => $transport,
+        ]);
+        $this->assertTrue($transport->isExhausted());
+        $status = new stdClass();
+        $status->code = Code::DATA_LOSS;
+        $status->details = 'internal error';
+        $expectedExceptionMessage  = json_encode([
+            'message' => 'internal error',
+            'code' => Code::DATA_LOSS,
+            'status' => 'DATA_LOSS',
+            'details' => [],
+        ], JSON_PRETTY_PRINT);
+        $transport->addResponse(null, $status);
+        // Mock request
+        $savedQuery = new SavedQuery();
+        $updateMask = new FieldMask();
+        try {
+            $client->updateSavedQuery($savedQuery, $updateMask);
             // If the $client method call did not throw, fail the test
             $this->fail('Expected an ApiException, but no exception was thrown.');
         } catch (ApiException $ex) {
