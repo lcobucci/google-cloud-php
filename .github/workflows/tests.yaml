@@ -32,15 +32,15 @@ jobs:
         extensions: ${{ matrix.grpc-version }}
     - name: Install Dependencies
       run: |
-        find * -type d -depth 0 -name '[A-Z]*' | while read DIR
+        find . -type d -depth 1 -name './[A-Z]*' | while read DIR
         do
           composer --no-interaction --no-ansi --no-progress update -d ${DIR} &
         done
-        wait
+        time wait
     - name: Run Unit Test Suite
       run: |
         set -e
-        find * -type d -depth 0 -name '[A-Z]*' | while read DIR
+        find . -type d -depth 1 -name '[A-Z]*' | while read DIR
         do
           ${DIR}/vendor/bin/phpunit -c ${DIR}/${{ matrix.phpunit-filename }}.xml.dist
         done
@@ -48,7 +48,7 @@ jobs:
       name: Run Snippet Test Suite
       run: |
         set -e
-        find * -name 'phpunit-snippets.xml.dist' -depth 1 -exec dirname {} \; | while read DIR
+        find . -name 'phpunit-snippets.xml.dist' -depth 2 -exec dirname {} \; | while read DIR
         do
           ${DIR}/vendor/bin/phpunit -c ${DIR}/${{ matrix.phpunit-filename }}-snippets.xml.dist --verbose
         done
