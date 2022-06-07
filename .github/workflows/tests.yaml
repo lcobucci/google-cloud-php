@@ -32,7 +32,7 @@ jobs:
         extensions: ${{ matrix.grpc-version }}
     - name: Install Dependencies
       run: |
-        find . -type d -depth 1 -name './[A-Z]*' | while read DIR
+        find . -type d -depth 1 -name '[A-Z]*' | while read DIR
         do
           composer --no-interaction --no-ansi --no-progress update -d ${DIR} &
         done
