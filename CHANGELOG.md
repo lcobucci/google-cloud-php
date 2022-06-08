@@ -1,5 +1,67 @@
 # Changelog
 
+## 0.184.0
+
+<details><summary>google/cloud-ai-platform 0.5.0</summary>
+
+
+
+### Features
+
+* [AiPlatform] add monitor_window to ModelDeploymentMonitoringScheduleConfig proto in aiplatform v1/v1beta1 model_deployment_monitoring_job.proto ([#5320](https://github.com/googleapis/google-cloud-php/issues/5320)) ([c92aa81](https://github.com/googleapis/google-cloud-php/commit/c92aa81ead0280562b4d923e1824b7c07b5d61fe))
+
+</details>
+
+<details><summary>google/cloud-contact-center-insights 0.2.5</summary>
+
+
+
+### Documentation
+
+* [ContactCenterInsights] Updating comments ([#5319](https://github.com/googleapis/google-cloud-php/issues/5319)) ([9574294](https://github.com/googleapis/google-cloud-php/commit/957429495164efc545700d7aab3fc94640710bd6))
+
+</details>
+
+<details><summary>google/cloud-functions 0.4.0</summary>
+
+
+
+### Features
+
+* [Functions] added support for CMEK ([#5321](https://github.com/googleapis/google-cloud-php/issues/5321)) ([65913d0](https://github.com/googleapis/google-cloud-php/commit/65913d04710d2fe031ceee43d4cb125be373e291))
+
+</details>
+
+<details><summary>google/cloud-pubsub 1.38.1</summary>
+
+
+
+### Bug Fixes
+
+* remove default value for deprecated option "returnImmediately" ([#4734](https://github.com/googleapis/google-cloud-php/issues/4734)) ([1416117](https://github.com/googleapis/google-cloud-php/commit/1416117b1057c3371cb4716ad0a1cfbb142f5ce9))
+
+</details>
+
+<details><summary>google/cloud-shell 0.2.0</summary>
+
+
+
+### Features
+
+* [Shell] expose clientCertSource option ([#4889](https://github.com/googleapis/google-cloud-php/issues/4889)) ([7326883](https://github.com/googleapis/google-cloud-php/commit/7326883999de2faf92b434892d4286afb9f5356b))
+
+</details>
+
+<details><summary>google/cloud-spanner 1.50.0</summary>
+
+
+
+### Features
+
+* [Spanner] add Session creator role ([#5318](https://github.com/googleapis/google-cloud-php/issues/5318)) ([fb87e51](https://github.com/googleapis/google-cloud-php/commit/fb87e51c917e16709c03830a16d50ad372c5780f))
+
+</details>
+
 ## 0.183.0
 
 <details><summary>google/cloud-ai-platform 0.4.0</summary>
