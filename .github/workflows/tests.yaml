@@ -32,20 +32,20 @@ jobs:
         extensions: ${{ matrix.grpc-version }}
     - name: Install Dependencies
       run: |
-        find * -maxdepth 0 -type d -name '[A-Z]*' | while read DIR; do {
+        for DIR in $(find * -maxdepth 0 -type d -name '[A-Z]*'); do {
           composer --no-interaction --no-ansi --no-progress update -d ${DIR};
         }; done
     - name: Run Unit Test Suite
       run: |
         set -e
-        find * -maxdepth 0 -type d -name '[A-Z]*' | while read DIR; do {
+        for DIR in $(find * -maxdepth 0 -type d -name '[A-Z]*'); do {
           ${DIR}/vendor/bin/phpunit -c ${DIR}/${{ matrix.phpunit-filename }}.xml.dist;
         }; done
     - if: ${{ matrix.platform != 'windows-latest' }}
       name: Run Snippet Test Suite
       run: |
         set -e
-        find * -mindepth 1 -type f -name 'phpunit-snippets.xml.dist' -exec dirname {} \; | while read DIR; do {
+        for DIR in $(find * -mindepth 1 -type f -name 'phpunit-snippets.xml.dist' -exec dirname {} \;); do {
           ${DIR}/vendor/bin/phpunit -c ${DIR}/${{ matrix.phpunit-filename }}-snippets.xml.dist --verbose
         }; done
 
